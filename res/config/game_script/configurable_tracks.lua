@@ -16,8 +16,6 @@ local translations = {
     TRANSPARENT = "Transparent",
     CONCRETE = "Concrete",
     SPEEDLIMIT = "Speedlimit",
-    ON = "ON",
-    OFF = "OFF",
     NO = "No",
     YES = "Yes"
 }
@@ -120,7 +118,6 @@ local createWindow = function()
         useNo:onToggle(function()
             table.insert(state.fn, function()
                 game.interface.sendScriptEvent("__ctracks__", "use", {use = false})
-                print("Setting agent state to false")
                 game.interface.sendScriptEvent("__ptracks__", "agent", {agent = false})
 
                 tunnelTypeComp:setVisible(false, false)
@@ -131,7 +128,6 @@ local createWindow = function()
         useYes:onToggle(function()
             table.insert(state.fn, function()
                 game.interface.sendScriptEvent("__ctracks__", "use", {use = true})
-                print("Setting agent state to true")
                 game.interface.sendScriptEvent("__ptracks__", "agent", {agent = true})
 
                 tunnelTypeComp:setVisible(true, false)
@@ -206,7 +202,6 @@ local script = {
   handleEvent = function(src, id, name, param)
     if (id == "__ctracks__") then
       if (name == "replace") then
-        print("replacingTrack")
         replaceTrack(param.newSegments)
       elseif (name == "use") then
         state.use = param.use
@@ -268,7 +263,6 @@ local script = {
           end
           
           if #newSegments > 0 then
-            -- print("replacing track")
             game.interface.sendScriptEvent("__ctracks__", "replace", {newSegments = newSegments})
           end
         end
