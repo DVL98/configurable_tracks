@@ -1,0 +1,31 @@
+function data()
+return {
+	boundingInfo = {
+		bbMax = { 9.5, 4, 6.3, },
+		bbMin = { -9, -4, -2, },
+	},
+	collider = {
+		params = { },
+		transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+		type = "MESH",
+	},
+	lods = {
+		{
+			node = {
+				children = { },
+				name = "RootNode",
+				transf = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, },
+			},
+			static = false,
+			visibleFrom = 0,
+			visibleTo = 0.01,
+		},
+	},
+	metadata = {
+		cost = {
+			price = -1,
+		},
+	},
+	version = 1,
+}
+end
