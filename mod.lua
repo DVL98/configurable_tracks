@@ -3,11 +3,11 @@ local tunnelTypes = require "ctracks/tunnel_types"
 function data()
 return {
   info = {
-    minorVersion = 1.0,
+    minorVersion = 0,
     severityAdd = "NONE",
     severityRemove = "NONE",
-    name = "Configurable tracks",
-    description = "Adds the ability to configure the tracks before building. Options include: tunnel type, speedlimit and parallel tracks",
+    name = "Configurable Tracks",
+    description = "Adds the ability to configure the tracks before building. Options include tunnel type and speedlimit. Compatible with Auto Parallel Tracks",
 	  tags = {"Track", "Script Mod"},
 	  visible = true,
     authors = {
