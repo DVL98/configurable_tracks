@@ -1,4 +1,4 @@
-local tunnelTypes = require "ctracks/tunnel_types"
+local collection = require "ctracks/collection"
 
 function data()
 return {
@@ -10,6 +10,24 @@ return {
     description = "Adds the ability to configure the tracks before building. Options include tunnel type and speedlimit. Compatible with Auto Parallel Tracks",
 	  tags = {"Track", "Script Mod"},
 	  visible = true,
+    params = {
+      {
+        key = "minSpeed",
+        name = "Minimum track speed",
+        uiType = "SLIDER",
+        values = collection.minSpeed,
+        defaultIndex = 0,
+        tooltip = "Choose the minimum speed of the configurable tracks",
+      },
+      {
+        key = "maxSpeed",
+        name = "Maximum track speed",
+        uiType = "SLIDER",
+        values = collection.maxSpeed,
+        defaultIndex = 0,
+        tooltip = "Choose the maximum speed of the configurable tracks",
+      },
+    },
     authors = {
       {
 		    name = "DVL",
@@ -17,7 +35,25 @@ return {
       },
     },    
   },
+  runFn = function (settings, params)
+    local modParams = params[getCurrentModId()]
+
+    local function paramSetter(fileName, data)
+      if fileName == "res/config/game_script/configurable_tracks.lua" then
+        data.modParams = modParams
+      end
+    
+      return data
+    end
+    
+    addModifier("loadGameScript", paramSetter)
+  end,
   postRunFn = function (settings, params)
+    local modParams = params[getCurrentModId()]
+
+    local minSpeed = tonumber(collection.minSpeed[modParams.minSpeed])
+    local maxSpeed = tonumber(collection.maxSpeed[modParams.maxSpeed])
+
     local tracks = api.res.trackTypeRep.getAll()
 
     for __, trackName in pairs(tracks) do
@@ -26,11 +62,11 @@ return {
       local original = {
         speedLimit = track.speedLimit,
         cost = track.cost,
-        tunnelWallMaterial = "track/tunnel_rail_ug.mtl",
-        tunnelHullMaterial = "track/tunnel_hull.mtl"
+        tunnelWallMaterial = track.tunnelWallMaterial,
+        tunnelHullMaterial = track.tunnelHullMaterial
       }
 
-      for speedLimit = 20, 360, 20 do
+      for speedLimit = 20, 400, 20 do
         local prefix = "ctracks_" .. speedLimit .. "_"
 
         track.speedLimit = speedLimit / 3.6
@@ -38,7 +74,7 @@ return {
 
         api.res.trackTypeRep.add(prefix .. tostring(trackName), track, false)
 
-        for tunnelType, config in pairs(tunnelTypes) do
+        for tunnelType, config in pairs(collection.tunnelTypes) do
           track.tunnelWallMaterial = config.tunnelWallMaterial
           track.tunnelHullMaterial = config.tunnelHullMaterial
           api.res.trackTypeRep.add(prefix .. tunnelType .."_" .. tostring(trackName), track, false)
