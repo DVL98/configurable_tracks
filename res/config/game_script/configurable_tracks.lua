@@ -30,7 +30,6 @@ end
 
 local createWindow = function()
   if not api.gui.util.getById("ctracks.use") then
-    debugPrint(script.modParams)
     local menu = api.gui.util.getById("menu.construction.rail.settings")
     local menuLayout = menu:getLayout()
     
